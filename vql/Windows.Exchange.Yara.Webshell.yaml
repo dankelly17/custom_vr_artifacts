@@ -1,0 +1,21 @@
+name: Windows.Exchange.Yara.Webshell
+description: |
+   This is the human readable description of the artifact.
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: CLIENT
+
+parameters:
+   - name: FirstParameter
+     default: Default Value of first parameter
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      SELECT * FROM Artifact.Generic.Detection.Yara.Glob(
+        PathGlob="%PROGRAMFILES%/Microsoft/Exchange Server/V15/FrontEnd/HttpProxy/owa/auth/**",
+        UploadHits="Y",
+        YaraUrl="https://raw.githubusercontent.com/DarkenCode/yara-rules/master/malware/Webshell-shell.yar"
+        )
